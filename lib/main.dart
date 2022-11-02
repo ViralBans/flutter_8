@@ -47,11 +47,13 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  Stream<String> getFile(String str) async* {
+  Future<String> getFile(String str) async {
     try {
       _fileContent = await fetchFileFromAssets(str);
+      return _fileContent;
     } catch (e) {
       _fileContent = '';
+      return _fileContent;
     }
   }
 
@@ -114,8 +116,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   padding: EdgeInsets.only(top: 15),
                 ),
                 Expanded(
-                  child: StreamBuilder(
-                    stream: getFile(_fileName),
+                  child: FutureBuilder(
+                    future: getFile(_fileName),
                     builder: (BuildContext context, AsyncSnapshot snapshot) {
                       switch (snapshot.connectionState) {
                         case ConnectionState.waiting:
